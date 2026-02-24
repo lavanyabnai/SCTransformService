@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ALT001",
+    "warehouseId": "NEW YORK DC",
+    "risk": "High",
+    "sitesAffected": "Zone B",
+    "projectedLoss": "15%",
+    "resolution": "Investigate cause and implement immediate productivity improvement measures",
+    "description": "Significant productivity decline in Zone B",
+    "status": "In-Progress",
+    "severity": "High"
+  },
+  {
+    "id": "ALT002",
+    "warehouseId": "LOS ANGELES DC",
+    "risk": "Medium",
+    "sitesAffected": "Zone A",
+    "projectedLoss": "8%",
+    "resolution": "Schedule equipment maintenance and staff training",
+    "description": "Equipment malfunction affecting sorting efficiency",
+    "status": "Pending",
+    "severity": "Medium"
+  },
+  {
+    "id": "ALT003",
+    "warehouseId": "CHICAGO DC",
+    "risk": "Low",
+    "sitesAffected": "Zone C",
+    "projectedLoss": "3%",
+    "resolution": "Update inventory management system",
+    "description": "Minor inventory discrepancies detected",
+    "status": "Completed",
+    "severity": "Low"
+  },
+  {
+    "id": "ALT004",
+    "warehouseId": "HOUSTON DC",
+    "risk": "High",
+    "sitesAffected": "Zone D, Zone E",
+    "projectedLoss": "20%",
+    "resolution": "Implement emergency backup power systems",
+    "description": "Power outage affecting multiple zones",
+    "status": "Backlog",
+    "severity": "High"
+  },
+  {
+    "id": "ALT005",
+    "warehouseId": "MIAMI GDC",
+    "risk": "Medium",
+    "sitesAffected": "Zone F",
+    "projectedLoss": "10%",
+    "resolution": "Optimize staff scheduling and workload distribution",
+    "description": "Staff shortage during peak hours",
+    "status": "In-Progress",
+    "severity": "Medium"
+  },
+  {
+    "id": "ALT006",
+    "warehouseId": "SEATTLE DC",
+    "risk": "High",
+    "sitesAffected": "All Zones",
+    "projectedLoss": "25%",
+    "resolution": "Update security protocols and systems",
+    "description": "Security system malfunction",
+    "status": "Backlog",
+    "severity": "High"
+  },
+  {
+    "id": "ALT007",
+    "warehouseId": "DALLAS DC",
+    "risk": "Low",
+    "sitesAffected": "Zone G",
+    "projectedLoss": "5%",
+    "resolution": "Calibrate temperature control systems",
+    "description": "Temperature fluctuations in cold storage",
+    "status": "In-Progress",
+    "severity": "Low"
+  },
+  {
+    "id": "ALT008",
+    "warehouseId": "ATLANTA DC",
+    "risk": "Medium",
+    "sitesAffected": "Zone H",
+    "projectedLoss": "12%",
+    "resolution": "Replace damaged conveyor belts",
+    "description": "Conveyor system maintenance required",
+    "status": "Completed",
+    "severity": "Medium"
+  },
+  {
+    "id": "ALT009",
+    "warehouseId": "DENVER DC",
+    "risk": "High",
+    "sitesAffected": "Zone I, Zone J",
+    "projectedLoss": "18%",
+    "resolution": "Implement flood prevention measures",
+    "description": "Water damage risk due to heavy rainfall",
+    "status": "Backlog",
+    "severity": "High"
+  },
+  {
+    "id": "ALT010",
+    "warehouseId": "BOSTON DC",
+    "risk": "Medium",
+    "sitesAffected": "Zone K",
+    "projectedLoss": "7%",
+    "resolution": "Upgrade ventilation systems",
+    "description": "Poor air circulation affecting work conditions",
+    "status": "In-Progress",
+    "severity": "Medium"
+  }
+]
