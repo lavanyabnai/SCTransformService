@@ -2,28 +2,47 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-const stats = [
-  { label: "Total Active Orders", value: "1,244", color: "text-blue-600" },
-  { label: "Awaiting Allocation", value: "186", color: "text-yellow-600" },
-  { label: "Allocated & In Progress", value: "892", color: "text-green-600" },
-  { label: "Blocked / On Hold", value: "47", color: "text-red-600" },
-  { label: "Partially Fulfilled", value: "119", color: "text-orange-600" },
-]
-
 export default function ActiveOrderStats() {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Active Order Statistics</CardTitle>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-sm flex items-center">
+          <span className="mr-2">📈</span>
+          Active Individual Sales Order Stats (selected below)
+        </CardTitle>
+        <p className="text-xs text-gray-500">Individual Sales Order of same Item, from same DC, on same Day</p>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex items-center justify-between p-3 border rounded-lg">
-              <span className="text-sm font-medium text-gray-700">{stat.label}</span>
-              <span className={`text-lg font-bold ${stat.color}`}>{stat.value}</span>
+      <CardContent className="space-y-4">
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-600">DC Inventory Available</span>
+            <span className="font-semibold">11</span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-sm text-gray-600">Order Quantity</span>
+            <span className="font-semibold">2</span>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Delta Available Inventory to Full Order</span>
+              <span className="font-semibold">9</span>
             </div>
-          ))}
+            <div className="w-full bg-red-200 rounded-full h-2">
+              <div className="bg-red-500 h-2 rounded-full w-full"></div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600">Cases Needed Until Next Drop</span>
+              <span className="font-semibold">0</span>
+            </div>
+            <div className="w-full bg-green-200 rounded-full h-2">
+              <div className="bg-green-500 h-2 rounded-full w-full"></div>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

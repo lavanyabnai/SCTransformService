@@ -1,22 +1,43 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { AlertTriangle } from "lucide-react"
+import { ChevronDown, Share, X } from "lucide-react"
 
 export default function AllocationAlertsHeader() {
   return (
-    <div className="flex items-center justify-between p-6 border-b bg-white">
-      <div className="flex items-center gap-3">
-        <AlertTriangle className="h-6 w-6 text-orange-500" />
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Allocation Alerts</h1>
-          <p className="text-sm text-gray-600">AI-powered order allocation monitoring and resolution</p>
+    <div className="bg-white border-b border-gray-200 p-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium">Status</span>
+            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+              Open
+            </Badge>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium">Severity</span>
+            <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200">
+              Medium
+            </Badge>
+          </div>
         </div>
-      </div>
-      <div className="flex items-center gap-3">
-        <Badge className="bg-red-100 text-red-800">5 Critical</Badge>
-        <Badge className="bg-yellow-100 text-yellow-800">12 Warning</Badge>
-        <Badge className="bg-green-100 text-green-800">8 Resolved</Badge>
+
+        <div className="flex items-center space-x-2">
+          <Button variant="outline" size="sm">
+            <span>🔔</span>
+            <span className="ml-1">Snooze</span>
+            <ChevronDown className="w-3 h-3 ml-1" />
+          </Button>
+          <Button variant="outline" size="sm">
+            <Share className="w-3 h-3 mr-1" />
+            Share Alert
+            <ChevronDown className="w-3 h-3 ml-1" />
+          </Button>
+          <Button variant="ghost" size="sm">
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
       </div>
     </div>
   )

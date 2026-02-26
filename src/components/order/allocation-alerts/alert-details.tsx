@@ -1,78 +1,38 @@
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-
-const alerts = [
-  {
-    id: "ALT-001",
-    type: "Stock Shortage",
-    severity: "critical",
-    product: "SKU-4521 Widget Pro",
-    warehouse: "DC East",
-    impact: "23 orders affected",
-    time: "2 hours ago",
-  },
-  {
-    id: "ALT-002",
-    type: "Demand Spike",
-    severity: "warning",
-    product: "SKU-1089 Connector XL",
-    warehouse: "DC West",
-    impact: "15 orders affected",
-    time: "4 hours ago",
-  },
-  {
-    id: "ALT-003",
-    type: "Allocation Conflict",
-    severity: "critical",
-    product: "SKU-7734 Sensor Unit",
-    warehouse: "DC Central",
-    impact: "31 orders affected",
-    time: "5 hours ago",
-  },
-  {
-    id: "ALT-004",
-    type: "Lead Time Delay",
-    severity: "warning",
-    product: "SKU-2290 Power Module",
-    warehouse: "DC South",
-    impact: "8 orders affected",
-    time: "6 hours ago",
-  },
-]
+import { Card, CardContent } from "@/components/ui/card"
 
 export default function AlertDetails() {
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Active Alert Details</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {alerts.map((alert) => (
-            <div key={alert.id} className="flex items-center justify-between p-4 border rounded-lg hover:shadow-sm transition-all">
-              <div className="flex items-center gap-4">
-                <Badge
-                  className={
-                    alert.severity === "critical"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-yellow-100 text-yellow-800"
-                  }
-                >
-                  {alert.severity}
-                </Badge>
-                <div>
-                  <p className="font-semibold">{alert.type}</p>
-                  <p className="text-sm text-gray-600">{alert.product} — {alert.warehouse}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-medium text-red-600">{alert.impact}</p>
-                <p className="text-xs text-gray-500">{alert.time}</p>
-              </div>
-            </div>
-          ))}
+      <CardContent className="p-6 space-y-4">
+        <p className="text-sm text-gray-700">
+          There is insufficient inventory to fulfill all sales orders for{" "}
+          <strong>SAUCE MINT CHOCOLATE COOKIE (10332)</strong> at <strong>DC OREGON</strong> on Thu, Mar 13, 2025. There
+          are <strong>11 cases available</strong> to promise at the DC but <strong>70 cases ordered</strong> by the
+          individual restaurants.
+        </p>
+
+        <p className="text-sm text-gray-700">
+          Based on the existing inventory available at the restaurants, the recommended solution is to{" "}
+          <span className="text-blue-600 underline cursor-pointer">
+            Cancel / Reduce Individual Sales Order Quantities to the Minimum
+          </span>{" "}
+          - No Transfer Needed.
+        </p>
+
+        <p className="text-sm text-gray-700">
+          There are currently <strong>20 Alerts</strong> for the same Item at this DC, consider resolving them from a
+          Network Perspective. Linked Alert:
+        </p>
+
+        <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+          <div className="flex items-center">
+            <span className="mr-2">🤖</span>
+            <span className="text-sm text-purple-700 font-medium">
+              Insufficient Inventory for SAUCE MINT CHOCOLATE COOKIE at DC PORTLAND on Thursday March 13, 2025
+            </span>
+          </div>
         </div>
       </CardContent>
     </Card>
