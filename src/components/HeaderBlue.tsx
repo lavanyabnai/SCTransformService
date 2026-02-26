@@ -13,7 +13,7 @@ import { GlobalSearch } from "./global-search";
 import {
   TowerControl,
   Boxes,
-  // PackageCheck,
+  PackageCheck,
   Warehouse,
   HandCoins,
   Banknote,
@@ -51,15 +51,15 @@ export const HeaderBlue = () => {
           iconBackground: "bg-blue-100",
           iconForeground: "text-blue-700",
         },
-        // {
-        //   name: "Orders and Returns",
-        //   description: "Manage orders",
-        //   shortDescription: "Order Management",
-        //   to: `/workspaces/${workspaceId}/orders/dashboard`,
-        //   icon: PackageCheck,
-        //   iconBackground: "bg-emerald-100",
-        //   iconForeground: "text-emerald-700",
-        // },
+        {
+          name: "Orders",
+          description: "Manage orders",
+          shortDescription: "Order Management",
+          to: `/workspaces/${workspaceId}/orders/home`,
+          icon: PackageCheck,
+          iconBackground: "bg-emerald-100",
+          iconForeground: "text-emerald-700",
+        },
         {
           name: "Warehousing",
           description: "Manage warehouse",
