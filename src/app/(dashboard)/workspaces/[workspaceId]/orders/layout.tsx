@@ -18,56 +18,123 @@ interface OrdersLayoutProps {
   children: React.ReactNode;
 }
 
+
 const data = [
   {
-    label: "Dashboard",
-    href: "/orders/dashboard",
-    icon: FaChartArea,
-    activeIcon: FaChartArea,
+    label: "Home",
+    href: "/orders/home",
+    icon: GoHome,
+    activeIcon: GoHomeFill,
   },
   {
-    label: "Control Tower",
-    href: "/orders/incidents",
+    label: "Allocation Alerts",
+    href: "/orders/allocation-alerts",
     icon: LiaBroadcastTowerSolid,
     activeIcon: LiaBroadcastTowerSolid,
   },
+
+  {
+    label: "Supplier Management",
+    href: "/orders/supplier-management",
+    icon: GoServer,
+    activeIcon: GoServer,
+  },
+
+
+
   {
     label: "Track & Trace",
     href: "/orders/track",
     icon: GoServer,
     activeIcon: GoServer,
   },
-  {
-    label: "Order Management",
-    href: "/orders/ordermange",
-    icon: TiShoppingCart,
-    activeIcon: TiShoppingCart,
-  },
-  {
-    label: "Order Fulfillment",
-    href: "/orders/orderfulfill",
-    icon: TbCheckupList,
-    activeIcon: TbCheckupList,
-  },
-  {
-    label: "Store Fulfillment",
-    href: "/orders/storefulfill",
-    icon: MdOutlineStorefront,
-    activeIcon: MdOutlineStorefront,
-  },
-  {
-    label: "Order to Cash",
-    href: "/orders/ordertocash",
-    icon: TbCashRegister,
-    activeIcon: TbCashRegister,
-  },
-  {
-    label: "Service Level Analytics",
-    href: "/orders/serviceLevel",
-    icon: GoCheckCircle,
-    activeIcon: GoCheckCircleFill,
-  },
+
+
+
+  // {
+  //   label: "Order Management",
+  //   href: "/orders/ordermange",
+  //   icon: TiShoppingCart,
+  //   activeIcon: TiShoppingCart,
+  // },
+  // {
+  //   label: "Order Fulfillment",
+  //   href: "/orders/orderfulfill",
+  //   icon: TbCheckupList,
+  //   activeIcon: TbCheckupList,
+  // },
+
+  // {
+  //   label: "Store Fulfillment",
+  //   href: "/orders/storefulfill",
+  //   icon: MdOutlineStorefront,
+  //   activeIcon: MdOutlineStorefront,
+  // },
+
+  // {
+  //   label: "Order to Cash",
+  //   href: "/orders/ordertocash",
+  //   icon: TbCashRegister,
+  //   activeIcon: TbCashRegister,
+  // },
+ 
+  // {
+  //   label: "Service Level Analytics",
+  //   href: "/orders/serviceLevel",
+  //   icon: GoCheckCircle,
+  //   activeIcon: GoCheckCircleFill,
+  // },
 ];
+// const data = [
+//   {
+//     label: "Dashboard",
+//     href: "/orders/dashboard",
+//     icon: FaChartArea,
+//     activeIcon: FaChartArea,
+//   },
+//   {
+//     label: "Control Tower",
+//     href: "/orders/incidents",
+//     icon: LiaBroadcastTowerSolid,
+//     activeIcon: LiaBroadcastTowerSolid,
+//   },
+//   {
+//     label: "Track & Trace",
+//     href: "/orders/track",
+//     icon: GoServer,
+//     activeIcon: GoServer,
+//   },
+//   {
+//     label: "Order Management",
+//     href: "/orders/ordermange",
+//     icon: TiShoppingCart,
+//     activeIcon: TiShoppingCart,
+//   },
+//   {
+//     label: "Order Fulfillment",
+//     href: "/orders/orderfulfill",
+//     icon: TbCheckupList,
+//     activeIcon: TbCheckupList,
+//   },
+//   {
+//     label: "Store Fulfillment",
+//     href: "/orders/storefulfill",
+//     icon: MdOutlineStorefront,
+//     activeIcon: MdOutlineStorefront,
+//   },
+//   {
+//     label: "Order to Cash",
+//     href: "/orders/ordertocash",
+//     icon: TbCashRegister,
+//     activeIcon: TbCashRegister,
+//   },
+//   {
+//     label: "Service Level Analytics",
+//     href: "/orders/serviceLevel",
+//     icon: GoCheckCircle,
+//     activeIcon: GoCheckCircleFill,
+//   },
+// ];
 
 const data2 = [
   {
