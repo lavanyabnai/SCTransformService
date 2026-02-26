@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Label } from "@/components/ui/label"
 
+
 interface InventoryData {
   parameter: string
   unit: string
@@ -29,25 +30,24 @@ interface FilterState {
 
 // SKU definitions
 const skuData: SKUData[] = [
-  { id: "drill-20v", name: "CRAFTSMAN 20V MAX Cordless Drill", price: 129, category: "Tools" },
-  { id: "mower-42", name: "Husqvarna 42-inch Riding Mower", price: 2499, category: "Lawn & Garden" },
-  { id: "fridge-25cf", name: "Whirlpool 25 Cu Ft Stainless Steel Refrigerator", price: 1899, category: "Appliances" },
-  { id: "flooring-oak", name: "Pergo Oak Laminate Flooring (per sq ft)", price: 3.99, category: "Flooring" },
-  { id: "shed-10x12", name: "Suncast 10x12 Storage Shed", price: 1299, category: "Storage" },
+  { id: "quest3-128", name: "Meta Quest 3 (128GB)", price: 499, category: "Premium" },
+  { id: "quest3-512", name: "Meta Quest 3 (512GB)", price: 649, category: "Premium" },
+  { id: "quest2-128", name: "Meta Quest 2 (128GB)", price: 299, category: "Entry" },
+  { id: "quest2-256", name: "Meta Quest 2 (256GB)", price: 399, category: "Entry" },
+  { id: "questpro", name: "Meta Quest Pro", price: 999, category: "Enterprise" },
 ]
 
 const regions = [
-  { id: "all-regions", name: "All Regions" },
-  { id: "northeast", name: "Northeast" },
-  { id: "southeast", name: "Southeast" },
-  { id: "midwest", name: "Midwest" },
-  { id: "west", name: "West" },
+  { id: "global", name: "Global" },
+  { id: "na", name: "North America" },
+  { id: "eu", name: "Europe" },
+  { id: "apac", name: "Asia Pacific" },
 ]
 
 const scenarios = [
   { id: "base", name: "Base Case" },
-  { id: "spring-peak", name: "Spring Peak Season" },
-  { id: "winter-low", name: "Winter Low Season" },
+  { id: "optimistic", name: "Optimistic" },
+  { id: "pessimistic", name: "Pessimistic" },
 ]
 
 // Generate realistic weekly data based on SKU and filters
@@ -55,33 +55,13 @@ const generateWeeklyData = (sku: string, region: string, scenario: string): Inve
   const selectedSKU = skuData.find((s) => s.id === sku) || skuData[0]
 
   // Base multipliers based on SKU category and price
-  const baseMultiplier =
-    selectedSKU.category === "Tools"
-      ? 1.2
-      : selectedSKU.category === "Lawn & Garden"
-        ? 0.8
-        : selectedSKU.category === "Appliances"
-          ? 0.6
-          : selectedSKU.category === "Flooring"
-            ? 1.5
-            : selectedSKU.category === "Storage"
-              ? 0.4
-              : 1.0
+  const baseMultiplier = selectedSKU.category === "Premium" ? 1.0 : selectedSKU.category === "Entry" ? 1.5 : 0.3
 
   // Region multipliers
-  const regionMultiplier =
-    region === "northeast"
-      ? 1.1
-      : region === "southeast"
-        ? 1.3
-        : region === "midwest"
-          ? 0.9
-          : region === "west"
-            ? 1.0
-            : 1.0
+  const regionMultiplier = region === "na" ? 1.2 : region === "eu" ? 0.8 : region === "apac" ? 0.6 : 1.0
 
   // Scenario multipliers
-  const scenarioMultiplier = scenario === "spring-peak" ? 1.4 : scenario === "winter-low" ? 0.6 : 1.0
+  const scenarioMultiplier = scenario === "optimistic" ? 1.3 : scenario === "pessimistic" ? 0.7 : 1.0
 
   const totalMultiplier = baseMultiplier * regionMultiplier * scenarioMultiplier
 
@@ -273,9 +253,10 @@ const getWeekHeaders = (): string[] => {
 }
 
 export default function MetaQuestInventory() {
+
   const [filters, setFilters] = useState<FilterState>({
-    sku: "drill-20v",
-    region: "all-regions",
+    sku: "quest3-128",
+    region: "global",
     scenario: "base",
   })
 
@@ -291,12 +272,13 @@ export default function MetaQuestInventory() {
     <div className="w-full space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="mt-2 text-2xl font-bold">Inventory Projections - Home Improvement Products</CardTitle>
+        
+          <CardTitle className="mt-2 text-2xl font-bold">Inventory Projections - Meta VR Headsets</CardTitle>
 
           {/* Filter Controls */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
             <div className="space-y-2">
-              <Label htmlFor="sku-select">Product Selection</Label>
+              <Label htmlFor="sku-select">SKU Selection</Label>
               <Select value={filters.sku} onValueChange={(value) => handleFilterChange("sku", value)}>
                 <SelectTrigger id="sku-select">
                   <SelectValue placeholder="Select SKU" />

@@ -94,13 +94,13 @@ export default function ProcureLayout({ children }: InventoryLayoutProps) {
   return (
     <div className="min-h-screen">
       <div className="mt-20 w-full h-full">
-       
-      
-          
+
+
+
             <main className="py-2 px-6 ">{children}</main>
-      
+
         </div>
       </div>
-   
+
   );
 }

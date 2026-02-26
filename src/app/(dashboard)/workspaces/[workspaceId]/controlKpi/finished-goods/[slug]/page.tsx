@@ -135,8 +135,6 @@ function getProductData(slug: string) {
       priority: "normal",
     },
   ]
-  
-  
 
   // Find matching product based on slug
   return finishedGoodsData.find((item) => slug.includes(encodeURIComponent(item.sku))) || finishedGoodsData[0]

@@ -44,54 +44,45 @@ export function MegaDropdownCategories({ categories }: MegaDropdownProps) {
           <Image className="size-8" src="/assets/logo-4.png" width={32} height={32} alt="logo" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[300px] p-2" sideOffset={8}>
-        <div className="grid gap-6 max-h-[80vh] overflow-y-auto pr-2">
-          {categories.map((category) => {
-            return (
-              <div key={category.category} className="space-y-3">
-                {/* <h3 className="text-sm font-medium text-muted-foreground sticky top-0 bg-background pt-1 pb-2 z-10">
-                  {category.category}
-                </h3> */}
-                {/* <Separator /> */}
-                <div className="grid grid-cols-1 gap-4">
-                  {[0, 1, 2].map((columnIndex) => (
-                    <div key={columnIndex} className="space-y-1.5">
-                      {category.items
-                        .filter((_, index) => index % 3 === columnIndex)
-                        .map((item) => (
-                          <button
-                            key={item.name}
-                            onClick={() => handleItemClick(item.to)}
-                            className={cn(
-                              "group flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-accent text-left",
-                              item.highlight && "bg-accent/50",
-                            )}
-                          >
-                            <div
-                              className={cn(
-                                "flex items-center justify-center size-9 rounded-full",
-                                item.iconBackground || "bg-background shadow-sm",
-                              )}
-                            >
-                              <item.icon
-                                className={cn(
-                                  "size-5",
-                                  item.iconForeground || "text-foreground/70 group-hover:text-primary",
-                                )}
-                              />
-                            </div>
-                            <div>
-                              <div className="font-medium text-sm">{item.name}</div>
-                              <div className="text-[10px] text-muted-foreground">{item.shortDescription}</div>
-                            </div>
-                          </button>
-                        ))}
+      <DropdownMenuContent align="end" className="w-[680px] p-4" sideOffset={8}>
+        <div className="max-h-[80vh] overflow-y-auto pr-1 space-y-6">
+          {categories.map((category) => (
+            <div key={category.category}>
+              <h3 className="text-sm font-medium text-muted-foreground mb-3">
+                {category.category}
+              </h3>
+              <div className="grid grid-cols-3 gap-2">
+                {category.items.map((item) => (
+                  <button
+                    key={item.name}
+                    onClick={() => handleItemClick(item.to)}
+                    className={cn(
+                      "group flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-accent text-left transition-colors",
+                      item.highlight && "bg-accent/50",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "flex shrink-0 items-center justify-center size-9 rounded-full",
+                        item.iconBackground || "bg-background shadow-sm",
+                      )}
+                    >
+                      <item.icon
+                        className={cn(
+                          "size-4",
+                          item.iconForeground || "text-foreground/70 group-hover:text-primary",
+                        )}
+                      />
                     </div>
-                  ))}
-                </div>
+                    <div className="min-w-0">
+                      <div className="font-medium text-sm truncate">{item.name}</div>
+                      <div className="text-[10px] text-muted-foreground truncate">{item.shortDescription}</div>
+                    </div>
+                  </button>
+                ))}
               </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
       </DropdownMenuContent>
     </DropdownMenu>

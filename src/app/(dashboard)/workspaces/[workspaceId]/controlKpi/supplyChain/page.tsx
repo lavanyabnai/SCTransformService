@@ -791,7 +791,7 @@ const controlTowerModules = [
                         color: "hsl(var(--chart-2))",
                       },
                     }}
-                    className="h-[300px] w-full"
+                    className="h-[300px]"
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={otifTrendData}>
@@ -840,7 +840,7 @@ const controlTowerModules = [
                         color: "hsl(var(--chart-3))",
                       },
                     }}
-                    className="h-[300px] w-full"
+                    className="h-[300px]"
                   >
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={benefitsData}>
