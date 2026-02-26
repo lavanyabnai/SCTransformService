@@ -1,41 +1,11 @@
-import Carrying from "@/components/sme/carrier";
-import Supplier from "@/components/sme/supplier";
-
-import EventsCard from "@/components/sme/EventsCard";
-
-import ControlTowerSum from "@/components/sme/ControlTowerSum";
-import { DataTableDemo } from "@/components/sme/table";
-import TopBox from "@/components/sme/topbox";
-import  TickerTape from "./ticker-tape";
-
-
-
-export default function Dashboard() {
-
+export default function InventoryDashboard() {
   return (
-    <div>
-      <TickerTape />
-
-      <TopBox />
-
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-5 mt-2">
-        <div className="col-span-3">
-          <ControlTowerSum />
-        </div>
-        <div className="col-span-2" >
-          <EventsCard />
-        </div>
-      </div>
-      <div className="grid grid-cols-5 gap-4 mt-4">
-        <div className="col-span-3">
-          <div className="grid grid-cols-2 gap-4">
-            <Carrying />
-            <Supplier />
-          </div>
-        </div>
-        <div className="col-span-2">
-          <DataTableDemo />
-        </div>
+    <div className="h-full p-4">
+      <h2 className="text-3xl font-bold ml-4 p-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-sky-700 to-blue-700 font-display">
+        Inventory Dashboard
+      </h2>
+      <div className="p-8 text-center text-muted-foreground">
+        Coming soon
       </div>
     </div>
   );
