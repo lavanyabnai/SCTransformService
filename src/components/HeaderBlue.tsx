@@ -13,7 +13,7 @@ import { GlobalSearch } from "./global-search";
 import {
   TowerControl,
   Boxes,
-  PackageCheck,
+  // PackageCheck,
   Warehouse,
   HandCoins,
   Banknote,
