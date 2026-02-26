@@ -18,7 +18,7 @@ import {
   HandCoins,
   Banknote,
   Truck,
-  Database,
+  // Database,
 } from "lucide-react";
 
 import { MegaDropdownCategories } from "@/components/mega-dropdown-categories";
@@ -30,7 +30,7 @@ export const HeaderBlue = () => {
 
   const categories = [
     {
-      category: "Control Tower",
+      category: "Supply Chain Modules",
       items: [
         {
           name: "Control Tower",
@@ -43,23 +43,23 @@ export const HeaderBlue = () => {
           highlight: true,
         },
         {
-          name: "Inventory Control",
-          description: "Balance your demand and supply",
-          shortDescription: "Demand Supply",
-          to: `/workspaces/${workspaceId}/inventory/invcontrol`,
+          name: "e2e Supply Chain",
+          description: "End to End Supply Chain",
+          shortDescription: "End to End Supply Chain",
+          to: `/workspaces/${workspaceId}/inventory/dashboard`,
           icon: Boxes,
           iconBackground: "bg-blue-100",
           iconForeground: "text-blue-700",
         },
-        {
-          name: "Orders and Returns",
-          description: "Manage orders",
-          shortDescription: "Order Management",
-          to: `/workspaces/${workspaceId}/events/demand`,
-          icon: PackageCheck,
-          iconBackground: "bg-green-100",
-          iconForeground: "text-green-700",
-        },
+        // {
+        //   name: "Orders and Returns",
+        //   description: "Manage orders",
+        //   shortDescription: "Order Management",
+        //   to: `/workspaces/${workspaceId}/orders/dashboard`,
+        //   icon: PackageCheck,
+        //   iconBackground: "bg-emerald-100",
+        //   iconForeground: "text-emerald-700",
+        // },
         {
           name: "Warehousing",
           description: "Manage warehouse",
@@ -96,15 +96,15 @@ export const HeaderBlue = () => {
           iconBackground: "bg-indigo-100",
           iconForeground: "text-indigo-700",
         },
-         {
-          name: "SupplyChain Data Platform",
-          description: "Data Writeback",
-          shortDescription: "Data Writeback",
-          to: `/workspaces/${workspaceId}/supplyChainData`,
-          icon: Database,
-          iconBackground: "bg-teal-100",
-          iconForeground: "text-teal-700",
-        },
+        //  {
+        //   name: "SupplyChain Data Platform",
+        //   description: "Data Writeback",
+        //   shortDescription: "Data Writeback",
+        //   to: `/workspaces/${workspaceId}/supplyChainData`,
+        //   icon: Database,
+        //   iconBackground: "bg-teal-100",
+        //   iconForeground: "text-teal-700",
+        // },
       ],
     },
     // {

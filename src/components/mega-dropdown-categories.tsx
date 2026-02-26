@@ -6,7 +6,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 import { cn } from "@/lib/utils"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 // import { Separator } from "@/components/ui/separator"
 
 // Define the type for dropdown items
@@ -44,20 +44,20 @@ export function MegaDropdownCategories({ categories }: MegaDropdownProps) {
           <Image className="size-8" src="/assets/logo-4.png" width={32} height={32} alt="logo" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[680px] p-4" sideOffset={8}>
+      <DropdownMenuContent align="end" className="w-[480px] p-4" sideOffset={8}>
         <div className="max-h-[80vh] overflow-y-auto pr-1 space-y-6">
           {categories.map((category) => (
             <div key={category.category}>
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">
+              <DropdownMenuLabel className="text-sm font-medium text-muted-foreground">
                 {category.category}
-              </h3>
-              <div className="grid grid-cols-3 gap-2">
+              </DropdownMenuLabel>
+              <div className="grid grid-cols-2 gap-1">
                 {category.items.map((item) => (
-                  <button
+                  <DropdownMenuItem
                     key={item.name}
                     onClick={() => handleItemClick(item.to)}
                     className={cn(
-                      "group flex items-center gap-3 rounded-lg px-3 py-2.5 hover:bg-accent text-left transition-colors",
+                      "group flex items-center gap-3 rounded-lg px-3 py-2.5 cursor-pointer",
                       item.highlight && "bg-accent/50",
                     )}
                   >
@@ -78,7 +78,7 @@ export function MegaDropdownCategories({ categories }: MegaDropdownProps) {
                       <div className="font-medium text-sm truncate">{item.name}</div>
                       <div className="text-[10px] text-muted-foreground truncate">{item.shortDescription}</div>
                     </div>
-                  </button>
+                  </DropdownMenuItem>
                 ))}
               </div>
             </div>

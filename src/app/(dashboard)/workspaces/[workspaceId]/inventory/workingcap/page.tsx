@@ -1,12 +1,49 @@
+"use client";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs"
+
+import InventoryProjectionTable from "@/components/WorkingCap/InventoryProjection"
+import InventoryOpportunity from "@/components/WorkingCap/InventoryOpportunity"
+import SimulationChart from "@/components/simulation/SimulationChart";
+import InvAnalysis from "@/components/endToend/InvAnalysis";
+import Segmentation from "@/components/endToend/Segmentation";
+
+
 export default function WorkingCap() {
-  return (
-    <div className="h-full p-4">
-      <h2 className="text-3xl font-bold ml-4 p-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-sky-700 to-blue-700 font-display">
-        Working Capital
-      </h2>
-      <div className="p-8 text-center text-muted-foreground">
-        Coming soon
-      </div>
-    </div>
-  );
-}
+    return (
+        <div className="h-full">
+            <Tabs defaultValue="invPro">
+                <TabsList>
+                    <TabsTrigger value="invPro">Inventory Projection</TabsTrigger>
+                    <TabsTrigger value="opp">Inventory Opportunity</TabsTrigger>
+                    <TabsTrigger value="simulation">Simulation</TabsTrigger>
+                    <TabsTrigger value="segmentation">Segmentation</TabsTrigger>
+                    <TabsTrigger value="invanalysis">Inventory Analysis</TabsTrigger>
+                </TabsList>
+                <TabsContent value="invPro">
+                    <InventoryProjectionTable />
+
+                </TabsContent>
+
+                <TabsContent value="opp">
+                    <InventoryOpportunity />
+                </TabsContent>
+                <TabsContent value="simulation">
+                    <SimulationChart />
+                </TabsContent>
+                <TabsContent value="segmentation">
+
+                    <Segmentation />
+                </TabsContent>
+                <TabsContent value="invanalysis">
+                    <InvAnalysis />
+
+                </TabsContent>
+            </Tabs>
+        </div>
+    );
+};

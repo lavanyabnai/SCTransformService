@@ -20,8 +20,11 @@ LicenseManager.setLicenseKey(
 );
 
 export const metadata: Metadata = {
-  title: "SC Transform Service",
-  description: "SC Transform Service",
+  title: "Control Tower",
+  description: "Control Tower",
+  icons: {
+    icon: "/assets/logo1.png",
+  },
 };
 
 export default function RootLayout({

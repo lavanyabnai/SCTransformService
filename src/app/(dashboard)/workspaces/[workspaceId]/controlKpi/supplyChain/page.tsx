@@ -18,7 +18,7 @@ import {
   Target,
   TrendingUp,
 } from "lucide-react"
-import { Bar, BarChart, Line, LineChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts"
+import { Bar, BarChart, Line, LineChart, XAxis, YAxis, CartesianGrid } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { useParams } from "next/navigation"
 
@@ -791,30 +791,28 @@ const controlTowerModules = [
                         color: "hsl(var(--chart-2))",
                       },
                     }}
-                    className="h-[300px]"
+                    className="h-[400px] w-full [aspect-ratio:auto]"
                   >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={otifTrendData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis domain={[80, 100]} />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Line
-                          type="monotone"
-                          dataKey="baseline"
-                          stroke="var(--color-baseline)"
-                          strokeDasharray="5 5"
-                          name="Baseline"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="current"
-                          stroke="var(--color-current)"
-                          strokeWidth={3}
-                          name="Current Performance"
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <LineChart data={otifTrendData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis domain={[80, 100]} />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line
+                        type="monotone"
+                        dataKey="baseline"
+                        stroke="var(--color-baseline)"
+                        strokeDasharray="5 5"
+                        name="Baseline"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="current"
+                        stroke="var(--color-current)"
+                        strokeWidth={3}
+                        name="Current Performance"
+                      />
+                    </LineChart>
                   </ChartContainer>
                 </CardContent>
               </Card>
@@ -840,19 +838,17 @@ const controlTowerModules = [
                         color: "hsl(var(--chart-3))",
                       },
                     }}
-                    className="h-[300px]"
+                    className="h-[400px] w-full [aspect-ratio:auto]"
                   >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={benefitsData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="metric" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
-                        <Bar dataKey="current" fill="var(--color-current)" name="Current" />
-                        <Bar dataKey="target" fill="var(--color-target)" name="Target" />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <BarChart data={benefitsData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="metric" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
+                      <Bar dataKey="current" fill="var(--color-current)" name="Current" />
+                      <Bar dataKey="target" fill="var(--color-target)" name="Target" />
+                    </BarChart>
                   </ChartContainer>
                 </CardContent>
               </Card>

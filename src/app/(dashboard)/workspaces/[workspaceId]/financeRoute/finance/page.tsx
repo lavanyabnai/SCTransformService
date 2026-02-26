@@ -1,12 +1,11 @@
-export default function FinancePage() {
-  return (
-    <div className="h-full p-4">
-      <h2 className="text-3xl font-bold ml-4 p-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-sky-700 to-blue-700 font-display">
-        Financial Dashboard
-      </h2>
-      <div className="p-8 text-center text-muted-foreground">
-        Coming soon
-      </div>
-    </div>
-  );
+import type { Metadata } from "next"
+import FinancialDashboard from "@/components/financeDashboard/financial-dashboard"
+
+export const metadata: Metadata = {
+  title: "Financial Dashboard",
+  description: "A comprehensive financial dashboard with key performance indicators",
+}
+
+export default function Page() {
+  return <FinancialDashboard />
 }
