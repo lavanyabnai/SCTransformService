@@ -4,195 +4,148 @@ import { useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowRight, TrendingUp, TrendingDown, Target, AlertTriangle, CheckCircle} from "lucide-react"
-import { Bar, BarChart, Line, LineChart, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts"
+import {
+  ArrowRight,
+  TrendingDown,
+  AlertTriangle,
+  Users,
+  Truck,
+  Factory,
+  Building2,
+  Package,
+  BarChart3,
+  Zap,
+  Target,
+  TrendingUp,
+} from "lucide-react"
+import { Bar, BarChart, Line, LineChart, XAxis, YAxis, CartesianGrid } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { useParams } from "next/navigation"
 
-// Updated data structures for root cause analysis
-const rootCauseData = {
-  totalStockouts: 31,
-  primaryCauses: [
+
+// Updated data structures for horizontal tree
+const otifTreeData = {
+  totalLoss: 100,
+  modules: [
     {
       id: 1,
-      name: "Stocks available at DC, but stocked out at Re-Distributor",
-      percentage: 55,
-      category: "Poor replenishment (regional distribution)",
-      lossType: "Distribution-related loss",
-      color: "bg-red-500",
+      name: "Customer & Demand",
+      percentage: 10,
+      icon: Users,
+      color: "bg-purple-600",
+      borderColor: "border-purple-300",
+      textColor: "text-purple-800",
+      bgColor: "bg-purple-50",
+      kpis: [
+        { name: "Sales SKOT", current: ">50%", target: ">90%" },
+        { name: "Forecast accuracy", current: ">70%", target: "75%" },
+        { name: "Forecast bias", current: "<5%", target: "<3%" },
+      ],
+      reasons: [
+        {
+          name: "Forecast Accuracy",
+          percentage: 10,
+          module: "M2: Demand planning and S&OP",
+        },
+      ],
     },
     {
       id: 2,
-      name: "No stock available at Distribution Centre",
-      percentage: 45,
-      category: "Supply chain upstream issues",
-      lossType: "Multiple loss types",
-      color: "bg-blue-600",
-    },
-  ],
-  secondaryCauses: [
-    // Customer and Demand related losses
-    {
-      id: 7,
-      name: "Poor demand planning",
-      percentage: 10,
-      lossType: "Customer & Demand-related loss",
-      module: "M1: Customer and order management, M2: Demand planning and S&OP",
-      kpi: "K2: Forecast accuracy, K3: Forecast bias",
-      color: "bg-purple-600",
-      category: "customer-demand",
-    },
-
-    // Distribution related losses
-    {
-      id: 1,
-      name: "Poor replenishment",
-      percentage: 1,
-      lossType: "Distribution-related loss",
-      module: "M4: Inventory and distribution planning",
-      kpi: "K6: Dispatch compliance",
-      color: "bg-orange-500",
-      category: "distribution",
+      name: "Distribution Loss",
+      percentage: 76,
+      icon: Truck,
+      color: "bg-red-600",
+      borderColor: "border-red-300",
+      textColor: "text-red-800",
+      bgColor: "bg-red-50",
+      kpis: [
+        { name: "FG Inventory", current: "<4 wks", target: "<3 wks" },
+        { name: "Dispatch compliance", current: ">90%", target: ">95%" },
+        { name: "Dispatch Coverage Plan", current: "85%", target: "95%" },
+      ],
+      reasons: [
+        {
+          name: "DC Replenishment Loss",
+          percentage: 55,
+          module: "M4: Inventory and distribution planning",
+        },
+        {
+          name: "Plant Dispatch Planning",
+          percentage: 10,
+          module: "M4: Inventory and distribution planning",
+        },
+        {
+          name: "Plant Dispatch Compliance",
+          percentage: 9,
+          module: "M4: Inventory and distribution planning",
+        },
+      ],
     },
     {
       id: 3,
-      name: "Poor dispatch planning from plants to DC",
-      percentage: 9,
-      lossType: "Distribution-related loss",
-      module: "M4: Inventory and distribution planning",
-      kpi: "K6: Dispatch compliance",
-      color: "bg-red-700",
-      category: "distribution",
-    },
-    {
-      id: 4,
-      name: "Poor dispatch plan compliance at plants",
-      percentage: 8,
-      lossType: "Distribution-related loss",
-      module: "M4: Inventory and distribution planning",
-      kpi: "K6: Dispatch compliance",
-      color: "bg-red-600",
-      category: "distribution",
-    },
-
-    // Supply related losses
-    {
-      id: 2,
-      name: "Poor production scheduling at plants",
-      percentage: 4,
-      lossType: "Supply-related loss",
-      module: "M5: Manufacturing planning",
-      kpi: "K7: Production compliance",
-      color: "bg-red-600",
-      category: "supply",
-    },
-    {
-      id: 5,
-      name: "Low production execution at plants",
-      percentage: 7,
-      lossType: "Supply-related loss",
-      module: "M5: Manufacturing planning",
-      kpi: "K7: Production compliance",
-      color: "bg-red-500",
-      category: "supply",
-    },
-    {
-      id: 6,
-      name: "Low production plan/capacity at plants",
-      percentage: 6,
-      lossType: "Supply-related loss",
-      module: "M5: Manufacturing planning",
-      kpi: "K7: Production compliance",
-      color: "bg-red-400",
-      category: "supply",
+      name: "Supply Loss",
+      percentage: 14,
+      icon: Factory,
+      color: "bg-green-600",
+      borderColor: "border-green-300",
+      textColor: "text-green-800",
+      bgColor: "bg-green-50",
+      kpis: [
+        { name: "Production compliance", current: ">95%", target: ">98%" },
+        { name: "Frozen period", current: "<1 wk", target: "<3 days" },
+        { name: "Supplier OTIF", current: ">85%", target: ">90%" },
+      ],
+      reasons: [
+        {
+          name: "Plant Production Scheduling",
+          percentage: 4,
+          module: "M5: Manufacturing planning",
+        },
+        {
+          name: "Plant Capacity",
+          percentage: 5,
+          module: "M5: Manufacturing planning",
+        },
+        {
+          name: "Production Execution",
+          percentage: 7,
+          module: "M5: Manufacturing planning",
+        },
+      ],
     },
   ],
 }
 
-const performanceMetrics = [
-  {
-    name: "Dispatch Coverage Plan",
-    current: 85,
-    benchmark: 100,
-    target: 95,
-    color: "hsl(220, 70%, 50%)",
-  },
-  {
-    name: "Dispatch Compliance",
-    current: 70,
-    benchmark: 95,
-    target: 90,
-    color: "hsl(220, 70%, 50%)",
-  },
-  {
-    name: "Production CLIP",
-    current: 65,
-    benchmark: 99,
-    target: 95,
-    color: "hsl(220, 70%, 50%)",
-  },
-  {
-    name: "Production Coverage Plan",
-    current: 85,
-    benchmark: 99,
-    target: 95,
-    color: "hsl(220, 70%, 50%)",
-  },
-]
-
-// Update the lossTypes array with better contrast
-const lossTypes = [
-  {
-    id: 1,
-    name: "Customer-related loss",
-    current: 1,
-    baseline: 5,
-    color: "bg-blue-500",
-    textColor: "text-white",
-    module: "M1: Customer and order management",
-    kpis: ["K1: Sales SKOT"],
-  },
-  {
-    id: 2,
-    name: "Demand-related loss",
-    current: 5,
-    baseline: 15,
-    color: "bg-blue-600",
-    textColor: "text-white",
-    module: "M2: Demand planning and S&OP",
-    kpis: ["K2: Forecast accuracy", "K3: Forecast bias"],
-  },
-  {
-    id: 3,
-    name: "Warehouse-related loss",
-    current: 0,
-    baseline: 5,
-    color: "bg-blue-700",
-    textColor: "text-white",
-    module: "M3: Warehouse planning",
-    kpis: ["K4: Warehouse TAT"],
-  },
-  {
-    id: 4,
-    name: "Distribution-related loss",
-    current: 1,
-    baseline: 10,
-    color: "bg-blue-800",
-    textColor: "text-white",
-    module: "M4: Inventory and distribution planning",
-    kpis: ["K5: FG Inventory", "K6: Dispatch compliance"],
-  },
-  {
-    id: 5,
-    name: "Supply-related loss",
-    current: 3,
-    baseline: 10,
-    color: "bg-blue-900",
-    textColor: "text-white",
-    module: "M5: Manufacturing planning, M6: Material planning",
-    kpis: ["K7: Production compliance", "K8: Frozen period", "K9: Supplier OTIF"],
-  },
-]
+// const performanceMetrics = [
+//   {
+//     name: "Dispatch Coverage Plan",
+//     current: 85,
+//     benchmark: 100,
+//     target: 95,
+//     color: "hsl(220, 70%, 50%)",
+//   },
+//   {
+//     name: "Dispatch Compliance",
+//     current: 70,
+//     benchmark: 95,
+//     target: 90,
+//     color: "hsl(220, 70%, 50%)",
+//   },
+//   {
+//     name: "Production CLIP",
+//     current: 65,
+//     benchmark: 99,
+//     target: 95,
+//     color: "hsl(220, 70%, 50%)",
+//   },
+//   {
+//     name: "Production Coverage Plan",
+//     current: 85,
+//     benchmark: 99,
+//     target: 95,
+//     color: "hsl(220, 70%, 50%)",
+//   },
+// ]
 
 const benefitsData = [
   { metric: "OTIF Performance", baseline: 85, current: 92, target: 95 },
@@ -210,50 +163,152 @@ const otifTrendData = [
 ]
 
 export default function ControlTowerDashboard() {
-  const [, setSelectedLossType] = useState<number | null>(null)
-  const { workspaceId } = useParams()
-  const handleLossTypeClick = (lossType: { id: number; name: string; module: string }) => {
-    setSelectedLossType(lossType.id)
-    // Placeholder for navigation
-    console.log(`Navigate to ${lossType.module} control tower`)
+  const [selectedModule, setSelectedModule] = useState<number | null>(null)
+  const [selectedControlModule] = useState<number | null>(null)
+  const params = useParams()
+  const workspaceId = params.workspaceId as string
+// Control Tower Modules Data
+const controlTowerModules = [
+  {
+    id: 1,
+    name: "Customer Forecast Demand",
+    description: "Orders > Customer allocated forecast",
+    icon: BarChart3,
+    color: "bg-blue-600",
+    bgColor: "bg-blue-50",
+    borderColor: "border-blue-300",
+    textColor: "text-blue-800",
+    alerts: 12,
+    status: "warning",
+    kpi: "Forecast Accuracy: 70%",
+    href: `/workspaces/${workspaceId}/controlKpi/demand-balancing`,
+  },
+  {
+    id: 2,
+    name: "Finished Goods",
+    description: "FG Coverage",
+    icon: Truck,
+    color: "bg-red-600",
+    bgColor: "bg-red-50",
+    borderColor: "border-red-300",
+    textColor: "text-red-800",
+    alerts: 22,
+    status: "critical",
+    kpi: "FG Coverage: 78%",
+    href: `/workspaces/${workspaceId}/controlKpi/finishGoods`,
+  },
+  {
+    id: 3,
+    name: "Customer Receipt",
+    description: "Customer OTIF",
+    icon: Users,
+    color: "bg-indigo-600",
+    bgColor: "bg-indigo-50",
+    borderColor: "border-indigo-300",
+    textColor: "text-indigo-800",
+    alerts: 18,
+    status: "warning",
+    kpi: "Customer OTIF: 92%",
+    href: `/workspaces/${workspaceId}/controlKpi/custReceipt`,
+  },
+  
+  {
+    id: 4,
+    name: "Manufacturing",
+    description: "Production OTIF",
+    icon: Factory,
+    color: "bg-orange-600",
+    bgColor: "bg-orange-50",
+    borderColor: "border-orange-300",
+    textColor: "text-orange-800",
+    alerts: 6,
+    status: "normal",
+    kpi: "Production OTIF: 95%",
+    href: `/workspaces/${workspaceId}/controlKpi/manfDash`,
+  },
+  {
+    id: 5,
+    name: "Supplier",
+    description: "Supplier OTIF",
+    icon: Building2,
+    color: "bg-green-600",
+    bgColor: "bg-green-50",
+    borderColor: "border-green-300",
+    textColor: "text-green-800",
+    alerts: 8,
+    status: "normal",
+    kpi: "Supplier OTIF: 85%",
+    href: `/workspaces/${workspaceId}/controlKpi/supplier-alerts`,
+  },
+ 
+
+
+  {
+    id: 6,
+    name: "Raw Materials",
+    description: "RM Coverage",
+    icon: Package,
+    color: "bg-purple-600",
+    bgColor: "bg-purple-50",
+    borderColor: "border-purple-300",
+    textColor: "text-purple-800",
+    alerts: 15,
+    status: "critical",
+    kpi: "RM Coverage: 65%",
+    href: `/workspaces/${workspaceId}/controlKpi/rawMaterial`,
+  },
+]
+
+
+
+
+
+
+
+  const handleModuleClick = (moduleId: number) => {
+    setSelectedModule(moduleId)
+    console.log(`Navigate to module ${moduleId} control tower`)
   }
 
-  const totalCurrentLoss = lossTypes.reduce((sum, type) => sum + type.current, 0)
-  const totalBaselineLoss = lossTypes.reduce((sum, type) => sum + type.baseline, 0)
-  const improvementPercentage = (((totalBaselineLoss - totalCurrentLoss) / totalBaselineLoss) * 100).toFixed(1)
+  // const handleControlModuleClick = (moduleId: number) => {
+  //   setSelectedControlModule(moduleId)
+  //   console.log(`Navigate to control module ${moduleId} alerts table`)
+  // }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "critical":
+        return "bg-red-500"
+      case "warning":
+        return "bg-yellow-500"
+      case "normal":
+        return "bg-green-500"
+      default:
+        return "bg-gray-500"
+    }
+  }
+
+  const totalAlerts = controlTowerModules.reduce((sum, module) => sum + module.alerts, 0)
 
   return (
-    <div className="">
-      <div className="">
+    <div className="min-h-screen bg-gray-50 p-6">
+      <div className="space-y-6">
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-4xl font-bold text-gray-900">Supply Chain Control Tower</h1>
-          <p className="text-lg text-gray-600">Availability Improvement & Loss Avoidance Dashboard</p>
+          <p className="text-lg text-gray-600">Early Warning System & Performance Dashboard</p>
         </div>
 
-        {/* Key Metrics Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Updated Key Metrics Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total OTIF Loss</p>
-                  <p className="text-2xl font-bold text-red-600">{totalCurrentLoss}%</p>
+                  <p className="text-sm font-medium text-gray-600">OTIF Performance</p>
+                  <p className="text-2xl font-bold text-blue-600">92%</p>
                 </div>
-                <TrendingDown className="h-8 w-8 text-red-600" />
-              </div>
-              <p className="text-xs text-gray-500 mt-2">Improved by {improvementPercentage}% from baseline</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Current OTIF</p>
-                  <p className="text-2xl font-bold text-green-600">92%</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-green-600" />
+                <Target className="h-8 w-8 text-blue-600" />
               </div>
               <p className="text-xs text-gray-500 mt-2">Target: 95%</p>
             </CardContent>
@@ -263,12 +318,12 @@ export default function ControlTowerDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Sales Impact</p>
-                  <p className="text-2xl font-bold text-blue-600">+3%</p>
+                  <p className="text-sm font-medium text-gray-600">Fill Rate</p>
+                  <p className="text-2xl font-bold text-green-600">87%</p>
                 </div>
-                <Target className="h-8 w-8 text-blue-600" />
+                <TrendingUp className="h-8 w-8 text-green-600" />
               </div>
-              <p className="text-xs text-gray-500 mt-2">Target: +5%</p>
+              <p className="text-xs text-gray-500 mt-2">Target: 90%</p>
             </CardContent>
           </Card>
 
@@ -276,535 +331,448 @@ export default function ControlTowerDashboard() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Inventory Optimization</p>
-                  <p className="text-2xl font-bold text-purple-600">-2%</p>
+                  <p className="text-sm font-medium text-gray-600">Service Level</p>
+                  <p className="text-2xl font-bold text-purple-600">94%</p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-purple-600" />
+                <Zap className="h-8 w-8 text-purple-600" />
               </div>
-              <p className="text-xs text-gray-500 mt-2">Target: -5%</p>
+              <p className="text-xs text-gray-500 mt-2">Target: 96%</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Perfect Order</p>
+                  <p className="text-2xl font-bold text-orange-600">89%</p>
+                </div>
+                <Package className="h-8 w-8 text-orange-600" />
+              </div>
+              <p className="text-xs text-gray-500 mt-2">Target: 92%</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">OTIF Loss</p>
+                  <p className="text-2xl font-bold text-red-600">8%</p>
+                </div>
+                <TrendingDown className="h-8 w-8 text-red-600" />
+              </div>
+              <p className="text-xs text-gray-500 mt-2">Critical threshold</p>
             </CardContent>
           </Card>
         </div>
 
-        <Tabs defaultValue="loss-tree" className="mt-6 space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="loss-tree">Availability Loss Tree</TabsTrigger>
+        <Tabs defaultValue="control-alerts" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="control-alerts">Control Tower Alerts</TabsTrigger>
+            <TabsTrigger value="otif-tree">OTIF Loss Tree</TabsTrigger>
             <TabsTrigger value="kpis">Supply Chain KPIs</TabsTrigger>
             <TabsTrigger value="benefits">Benefits & Performance</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="loss-tree" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Root Cause Analysis Tree */}
-              <div className="lg:col-span-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <AlertTriangle className="h-5 w-5 text-orange-500" />
-                      Root Cause Analysis - OTIF Loss
-                    </CardTitle>
-                    <CardDescription>Hierarchical breakdown of availability loss drivers</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-8">
-                      {/* Enhanced Main OTIF Loss Card */}
-                      <div className="flex justify-center">
-                        <div className="bg-gradient-to-br from-blue-100 to-blue-200 border-4 border-blue-400 rounded-2xl p-8 shadow-lg min-w-[320px]">
-                          <div className="text-center space-y-4">
-                            <h3 className="text-2xl font-bold text-blue-900">OTIF Loss at Last Mile</h3>
-                            <div className="relative">
-                              <p className="text-7xl font-black text-blue-700 leading-none">
-                                {rootCauseData.totalStockouts}%
-                              </p>
-                              <div className="absolute -top-2 -right-2">
-                                <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
-                                  CRITICAL
-                                </div>
-                              </div>
-                            </div>
-                            <p className="text-lg font-semibold text-blue-800">Re-distributor Level</p>
-                            <div className="bg-white/50 rounded-lg p-3">
-                              <p className="text-sm text-blue-700 font-medium">Supply Chain Impact Zone</p>
-                            </div>
+          <TabsContent value="control-alerts" className="space-y-6">
+            {/* Control Tower Alerts */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Zap className="h-5 w-5 text-orange-500" />
+                  Control Tower Early Warning Sensors
+                </CardTitle>
+                <CardDescription>
+                  Click on any module to view detailed alerts and take corrective actions
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {/* War Room Center */}
+                <div className="flex justify-center mb-8">
+                  <div className="bg-gradient-to-br from-gray-100 to-gray-200 border-4 border-gray-400 rounded-2xl p-6 shadow-lg">
+                    <div className="text-center space-y-3">
+                      <AlertTriangle className="h-12 w-12 text-orange-500 mx-auto" />
+                      <h3 className="text-xl font-bold text-gray-900">War Room</h3>
+                      <div className="space-y-1">
+                        <p className="text-sm text-gray-700">Total Alerts: {totalAlerts}</p>
+                        <div className="flex justify-center gap-2">
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                            <span className="text-xs">Critical</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                            <span className="text-xs">Warning</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-xs">Normal</span>
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                </div>
 
-                      {/* Enhanced Primary Causes Cards */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {rootCauseData.primaryCauses.map((cause) => (
-                          <Card
-                            key={cause.id}
-                            className="border-3 border-gray-300 hover:border-gray-400 transition-all duration-200 shadow-lg"
+                {/* Supply Chain Flow Modules */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {controlTowerModules.map((module, index) => (
+                    <Card
+                      key={module.id}
+                      className={`cursor-pointer transition-all hover:shadow-lg border-2 ${module.borderColor} ${
+                        selectedControlModule === module.id ? "ring-2 ring-blue-500" : ""
+                      }`}
+                      onClick={() => {
+                        window.location.href = module.href
+                      }}
+                    >
+                      <CardContent className={`p-6 ${module.bgColor} relative`}>
+                        {/* Status Indicator */}
+                        <div className="absolute top-3 right-3">
+                          <div className={`w-3 h-3 ${getStatusColor(module.status)} rounded-full animate-pulse`}></div>
+                        </div>
 
+                        {/* Module Number */}
+                        <div className="absolute top-3 left-3">
+                          <div
+                            className={`${module.color} text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold`}
                           >
-                            <CardContent className="p-6">
-                              <div >
+                            {index + 1}
+                          </div>
+                        </div>
 
-                                {/* Main Content Layout */}
-                                <div className="flex items-center gap-6">
-                                  {/* Large Percentage - Left Aligned */}
-                                  <div className="flex-shrink-0">
-                                    <div className={`${cause.color} text-white rounded-2xl px-6 py-4 shadow-lg`}>
-                                      <span className="text-4xl font-black">{cause.percentage}%</span>
-                                    </div>
-                                  </div>
+                        <div className="mt-8 space-y-4">
+                          {/* Icon and Title */}
+                          <div className="text-center">
+                            <div className={`${module.color} text-white rounded-2xl p-4 inline-block mb-3`}>
+                              <module.icon className="h-8 w-8" />
+                            </div>
+                            <h3 className={`text-lg font-bold ${module.textColor}`}>{module.name}</h3>
+                            <p className="text-sm text-gray-600 mt-1">{module.description}</p>
+                          </div>
 
-                                  {/* Text Content - Right Side */}
-                                  <div className="flex-1 space-y-3">
-                                    <h4 className="text-lg font-bold text-gray-900 leading-tight">{cause.name}</h4>
-                                    <p className="text-sm text-gray-600 font-medium">{cause.category}</p>
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                                      <span className="text-xs text-blue-600 font-medium">Primary Loss Driver</span>
-                                    </div>
+                          {/* KPI */}
+                          <div className="text-center">
+                            <p className="text-sm font-semibold text-gray-700">{module.kpi}</p>
+                          </div>
+
+                          {/* Alerts Count */}
+                          <div className="text-center">
+                            <Badge className={`${module.color} text-white`}>{module.alerts} Active Alerts</Badge>
+                          </div>
+
+                          {/* Action Indicator */}
+                          <div className="flex items-center justify-center gap-2 text-xs text-gray-500">
+                            <ArrowRight className="h-3 w-3" />
+                            <span>Click for alert details</span>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Action Flow Indicators */}
+                <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h4 className="font-semibold text-blue-800 mb-3">Early Warning Actions</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Re-allocate/prioritize customer orders</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Expedite; find alternate supplier</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Adjust RM portfolio</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Address production issues</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Adjust FG portfolio</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <span>Expedite order; alert client of delay</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Selected Module Alert Details */}
+            {selectedControlModule && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    {controlTowerModules.find((m) => m.id === selectedControlModule)?.name} - Alert Details
+                  </CardTitle>
+                  <CardDescription>Active alerts and recommended actions for this module</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-semibold mb-3">Active Alerts</h4>
+                      <div className="space-y-2">
+                        <div className="flex justify-between p-3 bg-red-50 border border-red-200 rounded">
+                          <span className="text-sm">High priority alert</span>
+                          <Badge variant="destructive">Critical</Badge>
+                        </div>
+                        <div className="flex justify-between p-3 bg-yellow-50 border border-yellow-200 rounded">
+                          <span className="text-sm">Medium priority alert</span>
+                          <Badge className="bg-yellow-500">Warning</Badge>
+                        </div>
+                        <div className="flex justify-between p-3 bg-blue-50 border border-blue-200 rounded">
+                          <span className="text-sm">Information alert</span>
+                          <Badge variant="secondary">Info</Badge>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-semibold mb-3">Recommended Actions</h4>
+                      <div className="space-y-2">
+                        <div className="p-3 bg-green-50 border border-green-200 rounded">
+                          <span className="text-sm">Immediate action required</span>
+                        </div>
+                        <div className="p-3 bg-blue-50 border border-blue-200 rounded">
+                          <span className="text-sm">Monitor closely</span>
+                        </div>
+                        <div className="p-3 bg-purple-50 border border-purple-200 rounded">
+                          <span className="text-sm">Schedule review</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="otif-tree" className="space-y-6">
+            {/* Horizontal OTIF Tree */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="h-5 w-5 text-orange-500" />
+                  OTIF Loss Tree - Root Cause Analysis
+                </CardTitle>
+                <CardDescription>Horizontal flow showing loss modules and their contributing factors</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="relative overflow-x-auto">
+                  <div className="flex items-center gap-8 min-w-max p-8">
+                    {/* Central OTIF Loss Node */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-gradient-to-br from-red-100 to-red-200 border-4 border-red-400 rounded-2xl p-6 shadow-lg min-w-[200px]">
+                        <div className="text-center space-y-3">
+                          <h3 className="text-xl font-bold text-red-900">OTIF Loss</h3>
+                          <div className="relative">
+                            <p className="text-5xl font-black text-red-700 leading-none">{otifTreeData.totalLoss}%</p>
+                            <div className="absolute -top-1 -right-1">
+                              <div className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                                CRITICAL
+                              </div>
+                            </div>
+                          </div>
+                          <p className="text-sm font-semibold text-red-800">Re-distributor Level</p>
+                        </div>
+                      </div>
+                      <div className="mt-4 text-center">
+                        <Badge variant="outline" className="bg-white text-xs font-semibold">
+                          Root Cause
+                        </Badge>
+                      </div>
+                    </div>
+
+                    {/* Connection Lines and Modules */}
+                    <div className="flex flex-col gap-6">
+                      {otifTreeData.modules.map((module, _index) => (
+                        <div key={module.id} className="flex items-center gap-4">
+                          {/* Connection Line */}
+                          <div className="flex items-center">
+                            <div className="w-12 h-0.5 bg-gray-400"></div>
+                            <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
+                            <div className="w-12 h-0.5 bg-gray-400"></div>
+                          </div>
+
+                          {/* Module Card */}
+                          <Card
+                            className={`cursor-pointer transition-all hover:shadow-lg border-2 ${module.borderColor} ${
+                              selectedModule === module.id ? "ring-2 ring-blue-500" : ""
+                            }`}
+                            onClick={() => handleModuleClick(module.id)}
+                          >
+                            <CardContent className={`p-4 ${module.bgColor} min-w-[280px]`}>
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className={`${module.color} text-white rounded-lg p-2`}>
+                                  <module.icon className="h-5 w-5" />
+                                </div>
+                                <div className="flex-1">
+                                  <h4 className={`font-bold text-sm ${module.textColor}`}>{module.name}</h4>
+                                  <div className="flex items-center gap-2">
+                                    <span className={`text-2xl font-black ${module.textColor}`}>
+                                      {module.percentage}%
+                                    </span>
+                                    <span className="text-xs text-gray-600">loss</span>
                                   </div>
                                 </div>
                               </div>
+
+                              {/* KPIs */}
+                              <div className="space-y-2 mb-3">
+                                {module.kpis.map((kpi, kpiIndex) => (
+                                  <div key={kpiIndex} className="flex justify-between text-xs">
+                                    <span className="font-medium text-gray-700">{kpi.name}:</span>
+                                    <div className="flex gap-2">
+                                      <span className="text-green-600 font-semibold">{kpi.current}</span>
+                                      <span className="text-gray-500">→ {kpi.target}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+
+                              {module.percentage > 0 && (
+                                <Badge className={`${module.color} text-white text-xs`}>
+                                  {module.reasons.length} contributing factors
+                                </Badge>
+                              )}
                             </CardContent>
                           </Card>
-                        ))}
-                      </div>
 
-                      {/* Secondary Causes - Grouped by Loss Type */}
-                      <div>
-                        <h4 className="text-xl font-bold mb-6 text-gray-800">
-                          Key Reasons for Out of Stock in Network
-                        </h4>
+                          {/* Second Level - Reasons */}
+                          {module.reasons.length > 0 && (
+                            <div className="flex flex-col gap-3">
+                              {module.reasons.map((reason, reasonIndex) => (
+                                <div key={reasonIndex} className="flex items-center gap-2">
+                                  {/* Connection to reason */}
+                                  <div className="flex items-center">
+                                    <div className="w-8 h-0.5 bg-gray-300"></div>
+                                    <div className="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
+                                    <div className="w-8 h-0.5 bg-gray-300"></div>
+                                  </div>
 
-                        {/* Customer & Demand Related Loss */}
-                        <div className="mb-8">
-                          <h5 className="text-lg font-semibold text-purple-800 mb-4 flex items-center gap-3">
-                            <div className="w-4 h-4 bg-purple-600 rounded-full"></div>
-                            Customer & Demand Related OOS
-                          </h5>
-                          <div className="grid grid-cols-1 gap-4">
-                            {rootCauseData.secondaryCauses
-                              .filter((cause) => cause.category === "customer-demand")
-                              .map((cause) => (
-
-                                <Card
-                                  key={cause.id}
-                                  className="cursor-pointer transition-all hover:shadow-lg border-2 border-gray-200 hover:border-purple-300"
-                                  onClick={() => {
-                                    window.location.href = `/workspaces/${workspaceId}/controlKpi/finished-goods`;
-                                  }}
-                                >
-                                  <CardContent className="p-4">
-                                    <div className="flex items-center gap-4">
-                                      <div
-                                        className={`${cause.color} text-white rounded-xl px-4 py-2 text-lg font-bold flex items-center gap-2`}
-                                      >
-                                        <AlertTriangle className="h-6 w-6" /> {cause.percentage}
-                                      </div>
-                                      <div className="flex-1">
-                                        <h5 className="font-semibold text-base mb-2">{cause.name}</h5>
-                                        <p className="text-sm text-gray-600 mb-1">{cause.module}</p>
-                                        <p className="text-sm text-purple-600 font-medium">{cause.kpi}</p>
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-
-                              ))}
-                          </div>
-                        </div>
-
-                        {/* Distribution Related Loss */}
-                        <div className="mb-8">
-                          <h5 className="text-lg font-semibold text-blue-800 mb-4 flex items-center gap-3">
-                            <div className="w-4 h-4 bg-blue-600 rounded-full"></div>
-                            Distribution Related OOS
-                          </h5>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {rootCauseData.secondaryCauses
-                              .filter((cause) => cause.category === "distribution")
-                              .map((cause) => (
-                                <Card
-                                  key={cause.id}
-                                  className="cursor-pointer transition-all hover:shadow-lg border-2 border-gray-200 hover:border-blue-300"
-                                  onClick={() => {
-                                    window.location.href = `/workspaces/${workspaceId}/controlKpi/demand-balancing`;
-                                  }}
-
-                                >
-                                  <CardContent className="p-4">
-                                    <div className="text-center mb-3">
-                                      <div
-                                        className={`inline-block ${cause.color} text-white rounded-xl px-3 py-2 text-lg font-bold`}
-                                      >
-                                        <div className="flex items-center gap-2">
-                                          <AlertTriangle className="h-6 w-6" /> {cause.percentage}
+                                  {/* Reason Card */}
+                                  <Card className="border border-gray-200 hover:border-gray-300 transition-all">
+                                    <CardContent className="p-3 bg-white min-w-[220px]">
+                                      <div className="flex items-center gap-2 mb-2">
+                                        <div
+                                          className={`${module.color} text-white rounded px-2 py-1 text-xs font-bold`}
+                                        >
+                                          {reason.percentage}%
                                         </div>
+                                        <span className="text-xs font-medium text-gray-700">{reason.name}</span>
                                       </div>
-                                    </div>
-                                    <h5 className="font-semibold text-sm mb-3 text-center">{cause.name}</h5>
-                                    <div className="space-y-2">
-                                      <p className="text-xs text-gray-600 text-center">{cause.module}</p>
-                                      <p className="text-xs text-blue-600 text-center font-medium">{cause.kpi}</p>
-                                    </div>
-                                  </CardContent>
-                                </Card>
+                                      <p className="text-xs text-gray-500">{reason.module}</p>
+                                    </CardContent>
+                                  </Card>
+                                </div>
                               ))}
-                          </div>
+                            </div>
+                          )}
                         </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
 
-                        {/* Supply Related Loss */}
-                        <div className="mb-6">
-                          <h5 className="text-lg font-semibold text-green-800 mb-4 flex items-center gap-3">
-                            <div className="w-4 h-4 bg-green-600 rounded-full"></div>
-                            Supply Related OOS
-                          </h5>
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {rootCauseData.secondaryCauses
-                              .filter((cause) => cause.category === "supply")
-                              .map((cause) => (
-                                <Card
-                                  key={cause.id}
-                                  className="cursor-pointer transition-all hover:shadow-lg border-2 border-gray-200 hover:border-green-300"
-                                  onClick={() => {
-                                    window.location.href = `/workspaces/${workspaceId}/controlKpi/supplier-alerts`;
-                                  }}
-                                >
-                                  <CardContent className="p-4">
-                                    <div className="text-center mb-3">
-                                      <div
-                                        className={`inline-block ${cause.color} text-white rounded-xl px-3 py-2 text-lg font-bold`}
-                                      >
-                                        {cause.percentage}%
-                                      </div>
-                                    </div>
-                                    <h5 className="font-semibold text-sm mb-3 text-center">{cause.name}</h5>
-                                    <div className="space-y-2">
-                                      <p className="text-xs text-gray-600 text-center">{cause.module}</p>
-                                      <p className="text-xs text-green-600 text-center font-medium">{cause.kpi}</p>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              ))}
-                          </div>
-                        </div>
+                {/* Summary Statistics */}
+                <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                    <h4 className="font-semibold text-red-800 mb-2">Distribution Loss Breakdown</h4>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>DC Replenishment:</span>
+                        <span className="font-semibold">55%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Plant Dispatch Planning:</span>
+                        <span className="font-semibold">10%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Plant Dispatch Compliance:</span>
+                        <span className="font-semibold">9%</span>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                  </div>
 
-              {/* Performance Metrics Charts */}
-              <div className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Performance Metrics</CardTitle>
-                    <CardDescription>Current vs Benchmark</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      {performanceMetrics.map((metric, index) => (
-                        <div key={index} className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span className="font-medium">{metric.name}</span>
-                            <span className="text-gray-500">{metric.current}%</span>
-                          </div>
-                          <div className="relative">
-                            <div className="w-full bg-gray-200 rounded-full h-6">
-                              <div
-                                className="h-6 rounded-full flex items-center justify-end pr-2"
-                                style={{
-                                  width: `${metric.current}%`,
-                                  backgroundColor: metric.color,
-                                }}
-                              >
-                                <span className="text-white text-xs font-medium">{metric.current}%</span>
-                              </div>
-                            </div>
-                            <div className="flex justify-between text-xs text-gray-500 mt-1">
-                              <span>Current</span>
-                              <span>Benchmark: {metric.benchmark}%</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 className="font-semibold text-green-800 mb-2">Supply Loss Breakdown</h4>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Production Execution:</span>
+                        <span className="font-semibold">7%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Plant Capacity:</span>
+                        <span className="font-semibold">5%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Production Scheduling:</span>
+                        <span className="font-semibold">4%</span>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
 
-                {/* L2 Loss Types Summary */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">L2 Loss Types</CardTitle>
-                    <CardDescription>Click to navigate to modules</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      {lossTypes.map((lossType) => (
-                        <Card
-                          key={lossType.id}
-                          className="cursor-pointer transition-all hover:shadow-md border border-gray-200 hover:border-blue-300"
-                          onClick={() => handleLossTypeClick(lossType)}
-                        >
-                          <CardContent className="p-3">
-                            <div className="flex items-center justify-between mb-2">
-                              <Badge className={`${lossType.color} ${lossType.textColor} text-xs`}>
-                                L2-{lossType.id}
-                              </Badge>
-                              <ArrowRight className="h-4 w-4 text-gray-400" />
-                            </div>
-                            <h5 className="font-medium text-xs mb-2">{lossType.name}</h5>
-                            <div className="text-xs text-gray-600">
-                              <p>
-                                Current: {lossType.current}% | Baseline: {lossType.baseline}%
-                              </p>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <h4 className="font-semibold text-purple-800 mb-2">Demand Loss Breakdown</h4>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex justify-between">
+                        <span>Forecast Accuracy:</span>
+                        <span className="font-semibold">10%</span>
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="kpis" className="space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Supply Chain KPIs Performance</CardTitle>
-                <CardDescription>Baseline vs Current Performance organized by loss type categories</CardDescription>
+                <CardDescription>Current performance vs targets across all modules</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-8">
-                  {/* Customer & Demand Related KPIs */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-purple-800 mb-4 flex items-center gap-2">
-                      <div className="w-4 h-4 bg-purple-600 rounded-full"></div>
-                      Customer & Demand Related KPIs
-                    </h3>
-                    <div className="space-y-4 bg-purple-50 p-4 rounded-lg">
-                      {[
-                        {
-                          name: "K1: Sales SKOT",
-                          baseline: ">100%",
-                          current: ">50%",
-                          improvement: true,
-                          target: ">90%",
-                        },
-                        {
-                          name: "K2: Forecast accuracy",
-                          baseline: "45%",
-                          current: ">70%",
-                          improvement: true,
-                          target: "75%",
-                        },
-                        {
-                          name: "K3: Forecast bias",
-                          baseline: "10%",
-                          current: "<5%",
-                          improvement: true,
-                          target: "<3%",
-                        },
-                      ].map((kpi, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-white border rounded-lg">
-                          <div className="flex-1">
-                            <h4 className="font-medium">{kpi.name}</h4>
+                <div className="space-y-6">
+                  {otifTreeData.modules.map((module) => (
+                    <div key={module.id} className={`p-4 ${module.bgColor} rounded-lg`}>
+                      <h3 className={`text-lg font-semibold ${module.textColor} mb-4 flex items-center gap-2`}>
+                        <module.icon className="h-5 w-5" />
+                        {module.name} Module ({module.percentage}% loss)
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {module.kpis.map((kpi, index) => (
+                          <div key={index} className="bg-white p-4 rounded-lg border">
+                            <h4 className="font-medium text-gray-900 mb-2">{kpi.name}</h4>
+                            <div className="flex items-center gap-4">
+                              <div className="text-center">
+                                <p className="text-sm text-gray-500">Current</p>
+                                <p className="text-lg font-bold text-green-600">{kpi.current}</p>
+                              </div>
+                              <ArrowRight className="h-4 w-4 text-gray-400" />
+                              <div className="text-center">
+                                <p className="text-sm text-gray-500">Target</p>
+                                <p className="text-lg font-bold text-blue-600">{kpi.target}</p>
+                              </div>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-6 text-sm">
-                            <div className="text-center">
-                              <p className="text-gray-500">Baseline</p>
-                              <p className="font-semibold text-red-600">{kpi.baseline}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Current</p>
-                              <p className="font-semibold text-green-600">{kpi.current}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Target</p>
-                              <p className="font-semibold text-blue-600">{kpi.target}</p>
-                            </div>
-                            {kpi.improvement && <TrendingUp className="h-5 w-5 text-green-500" />}
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Warehouse Related KPIs */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-orange-800 mb-4 flex items-center gap-2">
-                      <div className="w-4 h-4 bg-orange-600 rounded-full"></div>
-                      Warehouse Related KPIs
-                    </h3>
-                    <div className="space-y-4 bg-orange-50 p-4 rounded-lg">
-                      {[
-                        {
-                          name: "K4: Warehouse TAT",
-                          baseline: "10 hrs",
-                          current: "<4 hrs",
-                          improvement: true,
-                          target: "<2 hrs",
-                        },
-                      ].map((kpi, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-white border rounded-lg">
-                          <div className="flex-1">
-                            <h4 className="font-medium">{kpi.name}</h4>
-                          </div>
-                          <div className="flex items-center gap-6 text-sm">
-                            <div className="text-center">
-                              <p className="text-gray-500">Baseline</p>
-                              <p className="font-semibold text-red-600">{kpi.baseline}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Current</p>
-                              <p className="font-semibold text-green-600">{kpi.current}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Target</p>
-                              <p className="font-semibold text-blue-600">{kpi.target}</p>
-                            </div>
-                            {kpi.improvement && <TrendingUp className="h-5 w-5 text-green-500" />}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Distribution Related KPIs */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-blue-800 mb-4 flex items-center gap-2">
-                      <div className="w-4 h-4 bg-blue-600 rounded-full"></div>
-                      Distribution Related KPIs
-                    </h3>
-                    <div className="space-y-4 bg-blue-50 p-4 rounded-lg">
-                      {[
-                        {
-                          name: "K5: FG Inventory",
-                          baseline: "8 wks",
-                          current: "<4 wks",
-                          improvement: true,
-                          target: "<3 wks",
-                        },
-                        {
-                          name: "K6: Dispatch compliance",
-                          baseline: "80%",
-                          current: ">90%",
-                          improvement: true,
-                          target: ">95%",
-                        },
-                      ].map((kpi, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-white border rounded-lg">
-                          <div className="flex-1">
-                            <h4 className="font-medium">{kpi.name}</h4>
-                          </div>
-                          <div className="flex items-center gap-6 text-sm">
-                            <div className="text-center">
-                              <p className="text-gray-500">Baseline</p>
-                              <p className="font-semibold text-red-600">{kpi.baseline}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Current</p>
-                              <p className="font-semibold text-green-600">{kpi.current}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Target</p>
-                              <p className="font-semibold text-blue-600">{kpi.target}</p>
-                            </div>
-                            {kpi.improvement && <TrendingUp className="h-5 w-5 text-green-500" />}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Supply Related KPIs */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-green-800 mb-4 flex items-center gap-2">
-                      <div className="w-4 h-4 bg-green-600 rounded-full"></div>
-                      Supply Related KPIs
-                    </h3>
-                    <div className="space-y-4 bg-green-50 p-4 rounded-lg">
-                      {[
-                        {
-                          name: "K7: Production compliance",
-                          baseline: "75%",
-                          current: ">95%",
-                          improvement: true,
-                          target: ">98%",
-                        },
-                        {
-                          name: "K8: Frozen period",
-                          baseline: "1 mth",
-                          current: "<1 wk",
-                          improvement: true,
-                          target: "<3 days",
-                        },
-                        {
-                          name: "K9: Supplier OTIF",
-                          baseline: "45%",
-                          current: ">85%",
-                          improvement: true,
-                          target: ">90%",
-                        },
-                      ].map((kpi, index) => (
-                        <div key={index} className="flex items-center justify-between p-4 bg-white border rounded-lg">
-                          <div className="flex-1">
-                            <h4 className="font-medium">{kpi.name}</h4>
-                          </div>
-                          <div className="flex items-center gap-6 text-sm">
-                            <div className="text-center">
-                              <p className="text-gray-500">Baseline</p>
-                              <p className="font-semibold text-red-600">{kpi.baseline}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Current</p>
-                              <p className="font-semibold text-green-600">{kpi.current}</p>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-gray-400" />
-                            <div className="text-center">
-                              <p className="text-gray-500">Target</p>
-                              <p className="font-semibold text-blue-600">{kpi.target}</p>
-                            </div>
-                            {kpi.improvement && <TrendingUp className="h-5 w-5 text-green-500" />}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="benefits" className="space-y-6">
-          <Card>
-              <CardHeader>
-                <CardTitle>Business Impact Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="text-center p-6 bg-green-50 rounded-lg">
-                    <div className="text-3xl font-bold text-green-600 mb-2">+3%</div>
-                    <div className="text-sm font-medium text-green-800">Sales Growth</div>
-                    <div className="text-xs text-green-600 mt-1">Target: +5%</div>
-                  </div>
-                  <div className="text-center p-6 bg-blue-50 rounded-lg">
-                    <div className="text-3xl font-bold text-blue-600 mb-2">92%</div>
-                    <div className="text-sm font-medium text-blue-800">OTIF Performance</div>
-                    <div className="text-xs text-blue-600 mt-1">Target: 95%</div>
-                  </div>
-                  <div className="text-center p-6 bg-purple-50 rounded-lg">
-                    <div className="text-3xl font-bold text-purple-600 mb-2">-2%</div>
-                    <div className="text-sm font-medium text-purple-800">Inventory Reduction</div>
-                    <div className="text-xs text-purple-600 mt-1">Target: -5%</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
@@ -823,30 +791,28 @@ export default function ControlTowerDashboard() {
                         color: "hsl(var(--chart-2))",
                       },
                     }}
-                    className="h-[300px] w-full"
+                    className="h-[400px] w-full [aspect-ratio:auto]"
                   >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={otifTrendData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="month" />
-                        <YAxis domain={[80, 100]} />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Line
-                          type="monotone"
-                          dataKey="baseline"
-                          stroke="var(--color-baseline)"
-                          strokeDasharray="5 5"
-                          name="Baseline"
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="current"
-                          stroke="var(--color-current)"
-                          strokeWidth={3}
-                          name="Current Performance"
-                        />
-                      </LineChart>
-                    </ResponsiveContainer>
+                    <LineChart data={otifTrendData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis domain={[80, 100]} />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line
+                        type="monotone"
+                        dataKey="baseline"
+                        stroke="var(--color-baseline)"
+                        strokeDasharray="5 5"
+                        name="Baseline"
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="current"
+                        stroke="var(--color-current)"
+                        strokeWidth={3}
+                        name="Current Performance"
+                      />
+                    </LineChart>
                   </ChartContainer>
                 </CardContent>
               </Card>
@@ -872,25 +838,46 @@ export default function ControlTowerDashboard() {
                         color: "hsl(var(--chart-3))",
                       },
                     }}
-                    className="h-[300px] w-full"
+                    className="h-[400px] w-full [aspect-ratio:auto]"
                   >
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={benefitsData}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="metric" />
-                        <YAxis />
-                        <ChartTooltip content={<ChartTooltipContent />} />
-                        <Bar dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
-                        <Bar dataKey="current" fill="var(--color-current)" name="Current" />
-                        <Bar dataKey="target" fill="var(--color-target)" name="Target" />
-                      </BarChart>
-                    </ResponsiveContainer>
+                    <BarChart data={benefitsData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="metric" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="baseline" fill="var(--color-baseline)" name="Baseline" />
+                      <Bar dataKey="current" fill="var(--color-current)" name="Current" />
+                      <Bar dataKey="target" fill="var(--color-target)" name="Target" />
+                    </BarChart>
                   </ChartContainer>
                 </CardContent>
               </Card>
             </div>
 
-
+            <Card>
+              <CardHeader>
+                <CardTitle>Business Impact Summary</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center p-6 bg-green-50 rounded-lg">
+                    <div className="text-3xl font-bold text-green-600 mb-2">+3%</div>
+                    <div className="text-sm font-medium text-green-800">Sales Growth</div>
+                    <div className="text-xs text-green-600 mt-1">Target: +5%</div>
+                  </div>
+                  <div className="text-center p-6 bg-blue-50 rounded-lg">
+                    <div className="text-3xl font-bold text-blue-600 mb-2">92%</div>
+                    <div className="text-sm font-medium text-blue-800">OTIF Performance</div>
+                    <div className="text-xs text-blue-600 mt-1">Target: 95%</div>
+                  </div>
+                  <div className="text-center p-6 bg-purple-50 rounded-lg">
+                    <div className="text-3xl font-bold text-purple-600 mb-2">-2%</div>
+                    <div className="text-sm font-medium text-purple-800">Inventory Reduction</div>
+                    <div className="text-xs text-purple-600 mt-1">Target: -5%</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
